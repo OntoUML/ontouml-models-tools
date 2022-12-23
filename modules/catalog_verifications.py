@@ -88,8 +88,11 @@ def verify_association_ends(graph):
     for row in qres:
         # Get association ends with numbers
         if contains_number(row.prop_value.value):
-            problems_list_ends.append(problem_ends(row.class_name, row.relation_name, row.prop_value.value,
-                                                   "association end with number"))
+            # The replace function is necessary to generate a correct csv removing cases of line breaks in names
+            problems_list_ends.append(
+                problem_ends(row.class_name.replace("\n", ""), row.relation_name.replace("\n", ""),
+                             row.prop_value.value.replace("\n", ""),
+                             "association end with number"))
 
     return problems_list_ends
 

@@ -1,4 +1,4 @@
-# OntoUML/UFO Catalog Tools
+# OntoUML/UFO Models Tools
 
 The aim of the **ontouml-models-tools** is to offer a set of useful tools for the [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models) collaborators and administrators.
 
@@ -6,6 +6,7 @@ The aim of the **ontouml-models-tools** is to offer a set of useful tools for th
 
 - [Provided Tools](#provided-tools)
   - [Identification of Unwanted Characters](#identification-of-unwanted-characters)
+  - [Identification of Possible Multiplicities in Association Ends Roles](#identification-of-possible-multiplicities-in-association-ends-roles)
   - [Future Features](#future-features)
 - [Execution Instructions](#execution-instructions)
 - [Contributors](#contributors)
@@ -24,16 +25,28 @@ The `ontology.ttl` files inside each one of the catalog’s datasets are evaluat
 - stereotype in name (presence of “\<\<” or “\>\>”)
 - derivation in name (presence of “/”)
 
-The ontouml-models-tools reports the found problems in the `results.csv` file, which is generated into the project’s folder. This file is a csv with the following headers:
+The ontouml-models-tools software reports the found problems in the `results_char.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
 
-- `dataset`: the dataset in which the identified problem_char is located.
-- `instance`: the name of the instance that has the identified problem_char.
+- `dataset`: the dataset in which the identified problem is located.
+- `instance`: the name of the instance that has the identified problem.
 - `type`: the type of the problematic instance (e.g., Class, Relation).
-- `problem_char`: a brief phrase describing the problem_char found.
+- `problem`: a brief phrase describing the problem found.
+
+### Identification of Possible Multiplicities in Association Ends Roles
+
+This function verifies if there are numbers in association end roles. When providing manual information to the modeling software, a modeler can easily insert the association cardinality (multiplicity) in the incorrect field, filling the association end role instead of the association end multiplicity.
+
+The ontouml-models-tools software reports the found possible problems in the `results_ends.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
+
+- `dataset`: the dataset in which the identified problem is located.
+- `related_class`: a class that is related via the association that may have a problem (this information is provided for more easily locating the relation).
+- `relation_name`: the name of the association that contains the association end that may have a problem.
+- `end_value`: the value attributed to the association end role.
+- `problem`: a brief phrase describing the problem found.
 
 ### Future Features
 
-The intended features to be implemented are available as [issues](https://github.com/unibz-core/ontouml-models-tools/issues/) in this repository.
+The intended features to be implemented are available as issues in this repository.
 
 ## Execution Instructions
 
@@ -57,4 +70,4 @@ As mentioned, the OntoUML/UFO Catalog must be available as a folder in the user�
 
 - PhD. Pedro Paulo Favato Barcelos [[GitHub](https://github.com/pedropaulofb)] [[LinkedIn](https://www.linkedin.com/in/pedropaulofavatobarcelos/)]
 
-Please get in touch with this software’s contributors using the provided links or **preferably [open an issue](https://github.com/unibz-core/ontouml-models-tools/issues/)** in case of doubts or problems found.
+Please get in touch with this software’s contributors using the provided links or **preferably** [open an issue](https://github.com/unibz-core/ontouml-models-tools/issues/) in case of doubts or problems found.
