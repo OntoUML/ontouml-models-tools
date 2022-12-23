@@ -24,6 +24,7 @@ The `ontology.ttl` files inside each one of the catalog’s datasets are evaluat
 - has indentation (presence of “\t”)
 - stereotype in name (presence of “\<\<” or “\>\>”)
 - derivation in name (presence of “/”)
+- imported class represented in name (presence of “::”)
 
 The ontouml-models-tools software reports the found problems in the `results_char.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
 
