@@ -26,10 +26,10 @@ The `ontology.ttl` files inside each one of the catalog’s datasets are evaluat
 
 The ontouml-models-tools reports the found problems in the `results.csv` file, which is generated into the project’s folder. This file is a csv with the following headers:
 
-- `dataset`: the dataset in which the identified problem is located.
-- `instance`: the name of the instance that has the identified problem.
+- `dataset`: the dataset in which the identified problem_char is located.
+- `instance`: the name of the instance that has the identified problem_char.
 - `type`: the type of the problematic instance (e.g., Class, Relation).
-- `problem`: a brief phrase describing the problem found.
+- `problem_char`: a brief phrase describing the problem_char found.
 
 ### Future Features
 

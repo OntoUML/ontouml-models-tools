@@ -83,3 +83,8 @@ def get_list_unhidden_directories(directory_path):
                 list_directories.append(path)
 
     return list_directories
+
+
+def contains_number(string):
+    """ Returns True if the received string contains a number, returns Else otherwise. """
+    return any(char.isdigit() for char in string)
