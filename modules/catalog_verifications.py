@@ -25,6 +25,10 @@ def verify_unwanted_characters(graph):
             name_before = name.value
             type_clean = obj.n3()[1:-1].replace(NAMESPACE_ONTOUML, "")
 
+            if "\n" in name_before:
+                name_before = name_before.replace("\n", "")
+                problems_list.append(problem(name_before, type_clean, "has line break"))
+
             try:
                 name_before.encode("utf-8", errors='strict')
             except:
@@ -39,10 +43,6 @@ def verify_unwanted_characters(graph):
 
             if "  " in name_before:
                 problems_list.append(problem(name_before, type_clean, "has double space"))
-
-            if "\n" in name_before:
-                name_after = name_before.replace("\n", "")
-                problems_list.append(problem(name_after, type_clean, "has line break"))
 
             if "\t" in name_before:
                 problems_list.append(problem(name_before, type_clean, "has indentation"))
