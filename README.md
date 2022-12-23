@@ -1,4 +1,4 @@
-# OntoUML/UFO Models Tools
+# OntoUML/UFO Catalog Tools
 
 The aim of the **ontouml-models-tools** is to offer a set of useful tools for the [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models) collaborators and administrators.
 
