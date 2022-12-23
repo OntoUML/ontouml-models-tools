@@ -65,6 +65,9 @@ def verify_unwanted_characters(graph):
             if name_before.startswith("/"):
                 problems_list_char.append(problem_char(name_before, type_clean, "derivation in name"))
 
+            if "::" in name_before:
+                problems_list_char.append(problem_char(name_before, type_clean, "imported class represented in name"))
+
     return problems_list_char
 
 
