@@ -96,11 +96,3 @@ def verify_association_ends(graph):
 
     return problems_list_ends
 
-#         ?class rdf:type ontouml:Class .
-#         ?class ontouml:name ?class_name .
-#         ?relation rdf:type ontouml:Relation .
-#         ?relation ontouml:relationEnd ?prop_inst .
-#         ?relation ontouml:name ?relation_name .
-#         ?prop_inst rdf:type ontouml:Property .
-#         ?prop_inst ontouml:name ?prop_value .
-#         ?prop_inst ontouml:propertyType ?class
