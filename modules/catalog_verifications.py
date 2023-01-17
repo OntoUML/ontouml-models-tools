@@ -25,6 +25,16 @@ class problem_ends(object):
         self.description = description
 
 
+class problem_generalizations(object):
+    """ Class that contains information about problems found in generalizations. """
+
+    def __init__(self, generalization_name, specific_name, general_name, description):
+        self.generalization_name = generalization_name
+        self.specific_name = specific_name
+        self.general_name = general_name
+        self.description = description
+
+
 def verify_unwanted_characters(graph):
     """ For the entity types in the list, verify if their instances have unwanted characters. """
 
@@ -99,3 +109,35 @@ def verify_association_ends(graph):
 
     return problems_list_ends
 
+
+def verify_generalizations_properties(graph):
+    """ Identifies cases in which meta-properties are written as names in generalizations. """
+
+    # Get all generalizations that have a name and that are not in generalization sets
+    knows_query = """
+        PREFIX ontouml: <https://purl.org/ontouml-models/vocabulary/>
+        SELECT DISTINCT ?gen_inst_name ?specific_name ?general_name
+        WHERE {
+            ?gen_inst rdf:type ontouml:Generalization .
+            ?gen_inst ontouml:name ?gen_inst_name .
+            ?gen_inst ontouml:general ?general .
+            ?general ontouml:name ?general_name .
+            ?gen_inst ontouml:specific ?specific .
+            ?specific ontouml:name ?specific_name .
+            FILTER NOT EXISTS {?gs_inst ontouml:generalization ?gen_inst}
+        }"""
+
+    qres = graph.query(knows_query)
+
+    substring_list = ["{", "}", "over", "disj", "joint", "compl", "cover"]
+
+    problems_list_generalizations = []
+
+    for gen in qres:
+        if any(map(gen.gen_inst_name.__contains__, substring_list)):
+            problems_list_generalizations.append(problem_generalizations(gen.gen_inst_name.value,
+                                                                         gen.specific_name.value,
+                                                                         gen.general_name.value,
+                                                                         "property in generalization name"))
+
+    return problems_list_generalizations

@@ -45,6 +45,18 @@ The ontouml-models-tools software reports the found possible problems in the `re
 - `end_value`: the value attributed to the association end role.
 - `problem`: a brief phrase describing the problem found.
 
+### Identification of Possible Meta-properties Written as Names in Generalizations
+
+This function verifies if there are certain strings that indicate that the modeler has set generalization sets' meta-properties as a generalization name. The results display only cases in which the generalization has a name and is not part of any generalization set.
+
+The ontouml-models-tools software reports the found possible problems in the `results_gens.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
+
+- `dataset`: the dataset in which the identified problem is located.
+- `generalization_name`: the name provided by the modeler to the generalization.
+- `specific_name` the name of the subclass that participates in the generalization.
+- `general_name`: the name of the superclass that participates in the generalization.
+- `problem`: a brief phrase describing the problem found.
+
 ### Future Features
 
 The intended features to be implemented are available as issues in this repository.
