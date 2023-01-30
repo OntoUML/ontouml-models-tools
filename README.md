@@ -7,6 +7,7 @@ The aim of the **ontouml-models-tools** is to offer a set of useful tools for th
 - [Provided Tools](#provided-tools)
   - [Identification of Unwanted Characters](#identification-of-unwanted-characters)
   - [Identification of Possible Multiplicities in Association Ends Roles](#identification-of-possible-multiplicities-in-association-ends-roles)
+  - [Identification of Possible Meta-properties Written as Names in Generalizations](#identification-of-possible-meta-properties-written-as-names-in-generalizations)
   - [Future Features](#future-features)
 - [Execution Instructions](#execution-instructions)
 - [Contributors](#contributors)
