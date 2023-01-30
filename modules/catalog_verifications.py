@@ -98,14 +98,15 @@ def verify_association_ends(graph):
     }"""
 
     qres = graph.query(knows_query)
+
     for row in qres:
-        # Get association ends with numbers
-        if contains_number(row.prop_value.value):
+        # Get association ends with numbers or asterisks
+        if (contains_number(row.prop_value.value)) or ("*" in row.prop_value.value):
             # The replace function is necessary to generate a correct csv removing cases of line breaks in names
             problems_list_ends.append(
                 problem_ends(row.class_name.replace("\n", ""), row.relation_name.replace("\n", ""),
                              row.prop_value.value.replace("\n", ""),
-                             "association end with number"))
+                             "association end with possible multiplicity"))
 
     return problems_list_ends
 

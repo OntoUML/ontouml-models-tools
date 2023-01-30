@@ -35,7 +35,7 @@ The ontouml-models-tools software reports the found problems in the `results_cha
 
 ### Identification of Possible Multiplicities in Association Ends Roles
 
-This function verifies if there are numbers in association end roles. When providing manual information to the modeling software, a modeler can easily insert the association cardinality (multiplicity) in the incorrect field, filling the association end role instead of the association end multiplicity.
+This function verifies if there are numbers or asterisks in association end roles. When providing manual information to the modeling software, a modeler can easily insert the association cardinality (multiplicity) in the incorrect field, filling the association end role instead of the association end multiplicity.
 
 The ontouml-models-tools software reports the found possible problems in the `results_ends.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
 
