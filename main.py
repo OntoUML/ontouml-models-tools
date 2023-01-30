@@ -57,7 +57,7 @@ def run_catalog_tools():
                            f"case(s).")
 
     logger.info(f"Evaluation of problems concluded for all {datasets_list_length} datasets. "
-                f"The evaluation results are available in the results.csv file.")
+                f"The evaluation results are available in the csv files.")
 
 
 if __name__ == "__main__":
