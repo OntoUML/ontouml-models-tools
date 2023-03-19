@@ -8,6 +8,7 @@ The aim of the **ontouml-models-tools** is to offer a set of useful tools for th
   - [Identification of Unwanted Characters](#identification-of-unwanted-characters)
   - [Identification of Possible Multiplicities in Association Ends Roles](#identification-of-possible-multiplicities-in-association-ends-roles)
   - [Identification of Possible Meta-properties Written as Names in Generalizations](#identification-of-possible-meta-properties-written-as-names-in-generalizations)
+  - [Identification of Stereotypes that can be Updated](#identification-of-stereotypes-that-can-be-updated)
   - [Future Features](#future-features)
 - [Execution Instructions](#execution-instructions)
 - [Contributors](#contributors)
@@ -57,6 +58,17 @@ The ontouml-models-tools software reports the found possible problems in the `re
 - `specific_name` the name of the subclass that participates in the generalization.
 - `general_name`: the name of the superclass that participates in the generalization.
 - `problem`: a brief phrase describing the problem found.
+
+### Identification of Stereotypes that can be Updated
+
+This function verifies if there are stereotypes that can be substituted by a more recent name, as defined in the [catalog's documentation](https://github.com/OntoUML/ontouml-models/wiki/Frequently-Asked-Questions#how-do-i-document-stereotypes-that-are-not-part-of-the-current-ontouml-profile).
+
+The ontouml-models-tools software reports the found possible problems in the `results_ster.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
+
+- `dataset`: the dataset in which the identified problem is located.
+- `class_name`: the name of the class with the outdated stereotype.
+- `old_stereotype` the stereotype to be substituted.
+- `new_stereotype`: the updated stereotype that must be used to substitute the outdated one.
 
 ### Future Features
 
