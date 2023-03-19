@@ -23,7 +23,7 @@ def run_catalog_tools():
     logger = initialize_logger()
 
     # Building directories structure
-    datasets_list = get_list_unhidden_directories(arguments["catalog_path"])
+    datasets_list = get_list_unhidden_directories(arguments["catalog_path"]+"/models/")
     datasets_list.sort()
     datasets_list_length = len(datasets_list)
 
@@ -36,7 +36,7 @@ def run_catalog_tools():
             create_output_ends_file()
             create_output_gens_file()
 
-        dataset_location = arguments["catalog_path"] + "\\" + dataset_name
+        dataset_location = arguments["catalog_path"] + "\\models\\" + dataset_name
         dataset_ontology_location = dataset_location + "\\ontology.ttl"
 
         evaluated_ontology = load_all_graph_safely(dataset_ontology_location)
