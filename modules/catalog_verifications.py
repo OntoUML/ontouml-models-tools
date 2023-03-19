@@ -3,7 +3,7 @@ from rdflib import RDF, URIRef
 
 from modules.utils_general import contains_number
 
-NAMESPACE_ONTOUML = "https://purl.org/ontouml-models/vocabulary/"
+NAMESPACE_ONTOUML = "https://w3id.org/ontouml#"
 
 
 class problem_char(object):
@@ -87,7 +87,7 @@ def verify_association_ends(graph):
     problems_list_ends = []
 
     knows_query = """
-    PREFIX ontouml: <https://purl.org/ontouml-models/vocabulary/>
+    PREFIX ontouml: <https://w3id.org/ontouml#>
     SELECT DISTINCT ?class_name ?relation_name ?prop_value
     WHERE {
         ?prop_inst ontouml:propertyType ?class .
@@ -116,7 +116,7 @@ def verify_generalizations_properties(graph):
 
     # Get all generalizations that have a name and that are not in generalization sets
     knows_query = """
-        PREFIX ontouml: <https://purl.org/ontouml-models/vocabulary/>
+        PREFIX ontouml: <https://w3id.org/ontouml#>
         SELECT DISTINCT ?gen_inst_name ?specific_name ?general_name
         WHERE {
             ?gen_inst rdf:type ontouml:Generalization .

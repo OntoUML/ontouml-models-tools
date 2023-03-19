@@ -36,7 +36,12 @@ def run_catalog_tools():
             create_output_ends_file()
             create_output_gens_file()
 
-        dataset_location = arguments["catalog_path"] + "\\models\\" + dataset_name
+        if dataset_name != "aguiar2018rdbs-o":
+            continue
+        else:
+            print("entrou")
+
+        dataset_location = arguments["catalog_path"] + "models\\" + dataset_name
         dataset_ontology_location = dataset_location + "\\ontology.ttl"
 
         evaluated_ontology = load_all_graph_safely(dataset_ontology_location)
