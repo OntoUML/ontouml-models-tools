@@ -35,6 +35,15 @@ class problem_generalizations(object):
         self.description = description
 
 
+class problem_old_stereotypes(object):
+    """ Class that contains information about problems found in generalizations. """
+
+    def __init__(self, class_name, old_stereotype, new_stereotype):
+        self.class_name = class_name
+        self.old_stereotype = old_stereotype
+        self.new_stereotype = new_stereotype
+
+
 def verify_unwanted_characters(graph):
     """ For the entity types in the list, verify if their instances have unwanted characters. """
 
@@ -142,3 +151,55 @@ def verify_generalizations_properties(graph):
                                                                          "property in generalization name"))
 
     return problems_list_generalizations
+
+
+def verify_old_stereotypes(graph):
+    """ Identifies cases in which the used stereotypes can be substituted by correct ones.
+    According to: https://github.com/OntoUML/ontouml-models/wiki/Frequently-Asked-Questions
+    #how-do-i-document-stereotypes-that-are-not-part-of-the-current-ontouml-profile
+    """
+
+    problems_list_old_stereotypes = []
+
+    # Dictionary with stereotypes that can be substituted (all lowercase) and their substitution
+    old_stereotypes_dict = {
+        "powertype": "type",
+        "highordertype": "type",
+        "hou": "type",
+        "universal": "type",
+        "2ndot": "type",
+        "relatorkind": "relator",
+        "modekind": "mode",
+        "quantitykind": "quantity",
+        "collectivekind": "collective",
+        "qualitykind": "quality"
+    }
+
+    knows_query = """
+    PREFIX ontouml: <https://w3id.org/ontouml#>
+    SELECT DISTINCT ?class_name ?stereotype
+    WHERE {
+        ?class rdf:type ontouml:Class .
+        ?class ontouml:name ?class_name .
+        ?class ontouml:stereotype ?stereotype
+    }"""
+
+    qres = graph.query(knows_query)
+
+    for row in qres:
+        # Remove line breaks in class names
+        class_name = (row.class_name).replace("\n", "")
+
+        # Remove prefix, set to lowercase, and clean hyphens and underscores in stereotypes
+        no_prefix_stereotype_name = (row.stereotype).replace(NAMESPACE_ONTOUML, "")
+        stereotype_name = no_prefix_stereotype_name.lower()
+        stereotype_name = stereotype_name.replace("_", "")
+        stereotype_name = stereotype_name.replace("-", "")
+
+        # if in list, add to problems_list
+        if stereotype_name in old_stereotypes_dict.keys():
+            problems_list_old_stereotypes.append(problem_old_stereotypes(class_name,
+                                                                         no_prefix_stereotype_name,
+                                                                         old_stereotypes_dict[stereotype_name]))
+
+    return problems_list_old_stereotypes
