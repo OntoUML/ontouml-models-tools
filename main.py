@@ -1,11 +1,11 @@
 """ Main function for the ontouml-models-tools application. """
-from modules.catalog_verifications import verify_unwanted_characters, verify_association_ends, \
+from modules.data_quality.catalog_verifications import verify_unwanted_characters, verify_association_ends, \
     verify_generalizations_properties, verify_old_stereotypes
-from modules.initialization_arguments import treat_arguments
-from modules.logger_config import initialize_logger
-from modules.results_file import create_output_char_file, append_problems_output_char_file, \
+from modules.data_quality.results_file import create_output_char_file, append_problems_output_char_file, \
     append_problems_output_ends_file, create_output_ends_file, append_problems_output_generalizations_file, \
     create_output_gens_file, append_problems_output_old_stereotypes_file, create_output_ster_file
+from modules.initialization_arguments import treat_arguments
+from modules.logger_config import initialize_logger
 from modules.utils_general import get_list_unhidden_directories
 from modules.utils_rdf import load_all_graph_safely
 
