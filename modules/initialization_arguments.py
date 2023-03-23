@@ -28,10 +28,25 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     arguments_parser.add_argument("catalog_path", type=str, action="store",
                                   help="The path of the OntoUML/UFO Catalog directory.")
 
+    # OPTIONAL ARGUMENTS
+
+    automation_group = arguments_parser.add_mutually_exclusive_group()
+
+    automation_group.add_argument("-d", "--data_quality", action='store_true',
+                                  help="Execute data quality verifications.")
+
+    automation_group.add_argument("-r", "--release",
+                                  action='store_true',
+                                  help="Execute release file generation.")
+
     # Execute arguments parser
     arguments = arguments_parser.parse_args()
 
-    received_arguments = {"catalog_path": arguments.catalog_path}
+    received_arguments = {
+        "catalog_path": arguments.catalog_path,
+        "verify_data_quality": arguments.data_quality,
+        "generate_release": arguments.release
+    }
 
     logger.debug(f"Arguments Parsed. Obtained values are: {received_arguments}")
 

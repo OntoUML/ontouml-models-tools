@@ -11,14 +11,12 @@ from modules.utils_rdf import load_all_graph_safely
 
 SOFTWARE_ACRONYM = "OntoUML/UFO Catalog Tools"
 SOFTWARE_NAME = "ontouml-models-tools"
-SOFTWARE_VERSION = "0.23.01.30"
-SOFTWARE_URL = "https://github.com/unibz-core/ontouml-models-tools"
+SOFTWARE_VERSION = "0.23.03.23"
+SOFTWARE_URL = "https://github.com/OntoUML/ontouml-models-tools"
 
 
-def run_catalog_tools():
-    """ Calls each feature/tool for the catalog. """
-
-    arguments = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
+def run_data_quality_verifications(arguments):
+    """ Calls every data quality verification features for the catalog. """
 
     logger = initialize_logger()
 
@@ -65,4 +63,14 @@ def run_catalog_tools():
 
 
 if __name__ == "__main__":
-    run_catalog_tools()
+
+    arguments = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
+    logger = initialize_logger()
+
+    if arguments["verify_data_quality"]:
+        run_data_quality_verifications()
+    elif arguments["generate_release"]:
+        print("not implemented")
+    else:
+        logger.error("No feature selected. Please provide at least one valid argument. Enter '-h' for help.")
+        exit(1)
