@@ -101,14 +101,14 @@ Its code was developed and tested using Python v3.11.0.
 
 For installing all necessary dependencies, run the following command on the terminal inside the project’s folder:
 
-```shell
+```text
 pip install -r requirements.txt
 ```
 
 For executing the software, run the following command on the terminal inside the project’s folder,
 where `path_to_catalog` must be substituted for the location of the catalog’s directory on your computer:
 
-```shell
+```text
 python main.py path_to_catalog -arg
 ```
 
@@ -116,7 +116,7 @@ As mentioned, the OntoUML/UFO Catalog must be available as a folder in the user�
 must [clone its GitHub repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository)
 . All available ontouml-models-tools arguments can be observed below.
 
-```
+```text
 usage: ontouml-models-tools [-h] [-v] [-d | -r] catalog_path
 
 OntoUML/UFO Catalog Tools - ontouml-models-tools
