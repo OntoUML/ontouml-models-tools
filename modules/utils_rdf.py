@@ -30,7 +30,7 @@ def load_all_graph_safely(ontology_location):
     ontology_graph = Graph()
 
     try:
-        ontology_graph.parse(ontology_location)
+        ontology_graph.parse(ontology_location, encoding='utf-8')
     except OSError as error:
         logger.error(f"Could not load {ontology_location}. Exiting program.\n"
                      f"System error reported: {error}")
