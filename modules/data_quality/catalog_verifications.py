@@ -1,7 +1,7 @@
 """ Verifications over the catalog.ttl file. """
 from rdflib import RDF, URIRef
 
-from modules.utils_general import contains_number
+from modules.utils.utils_general import contains_number
 
 NAMESPACE_ONTOUML = "https://w3id.org/ontouml#"
 

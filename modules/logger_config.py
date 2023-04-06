@@ -3,7 +3,7 @@
 import logging
 import os
 
-from modules.utils_general import get_date_time
+from modules.utils.utils_general import get_date_time
 
 
 def initialize_logger(source="default"):

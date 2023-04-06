@@ -1,5 +1,5 @@
 """ Main function for the ontouml-models-tools application. """
-import glob
+import subprocess
 from datetime import date
 
 from rdflib import Graph
@@ -11,8 +11,9 @@ from modules.data_quality.results_file import create_output_char_file, append_pr
     create_output_gens_file, append_problems_output_old_stereotypes_file, create_output_ster_file
 from modules.initialization_arguments import treat_arguments
 from modules.logger_config import initialize_logger
-from modules.utils_general import get_list_unhidden_directories
-from modules.utils_rdf import load_all_graph_safely, save_ontology_file_safely
+from modules.utils.utils_catalog import list_all_ttl_files
+from modules.utils.utils_general import get_list_unhidden_directories
+from modules.utils.utils_rdf import load_all_graph_safely, save_ontology_file_safely
 
 SOFTWARE_ACRONYM = "OntoUML/UFO Catalog Tools"
 SOFTWARE_NAME = "ontouml-models-tools"
@@ -68,22 +69,20 @@ def run_data_quality_verifications(arguments):
 def generate_release_file(catalog_path: str):
     """ Generates a single file with all content from all ttl files in the catalog to be used as a release version. """
 
-    list_tt_files = []
     aggregated_graph = Graph()
-    today = date.today()
+    today = date.today().strftime("%Y/%M/%D")
+
     release_file_name = f"./ontouml-models-{today}.ttl"
 
     # Get all TTL files' complete paths
     logger.info(f"Identifying all TTL files in directory {catalog_path} and in its subdirectories.")
-    for ttl_file in glob.glob(catalog_path + '**/*.ttl', recursive=True):
-        if "\\shapes\\" not in ttl_file:
-            list_tt_files.append(ttl_file)
 
-    len_list_tt_files = len(list_tt_files)
+    list_ttl_files = list_all_ttl_files(catalog_path, "-shape.ttl")
+    len_list_tt_files = len(list_ttl_files)
 
     # Load all TTL files in a single graph
     logger.info("Generating single graph containing all TTL files' information.")
-    for count, ttl_file in enumerate(list_tt_files):
+    for count, ttl_file in enumerate(list_ttl_files):
         logger.info(f"Including file {count + 1}/{len_list_tt_files}: {ttl_file}")
         item_graph = load_all_graph_safely(ttl_file)
         aggregated_graph += item_graph
@@ -104,6 +103,22 @@ def generate_release_file(catalog_path: str):
     logger.info(f"Release file successfully saved as {release_file_name}.")
 
 
+def validate_ttl_syntax(catalog_path):
+    """ Uses external ttl software to validate the syntax of all ttl files in the catalog. """
+
+    list_ttl_files = list_all_ttl_files(catalog_path)
+    len_list_ttl_files = len(list_ttl_files)
+    logger.info(f"Starting ttl syntax validation of {len_list_ttl_files} files.")
+
+    for ttl_file in list_ttl_files:
+        file_name = ttl_file.split("\\ontouml-models\\", 1)[1]
+        ttl_output = subprocess.run(f"ttl ..\\ontouml-models\\{file_name}", shell=True, capture_output=True)
+        if "Validator finished with 0 warnings and 0 errors." in str(ttl_output.stdout):
+            logger.info(f"{file_name} is valid.")
+        else:
+            logger.warning(f"{file_name} has invalid syntax. {ttl_output.stdout}")
+
+
 if __name__ == "__main__":
 
     arguments = treat_arguments(SOFTWARE_ACRONYM, SOFTWARE_NAME, SOFTWARE_VERSION, SOFTWARE_URL)
@@ -113,6 +128,8 @@ if __name__ == "__main__":
         run_data_quality_verifications(arguments)
     elif arguments["generate_release"]:
         generate_release_file(arguments["catalog_path"])
+    elif arguments["validate_syntax"]:
+        validate_ttl_syntax(arguments["catalog_path"])
     else:
         logger.error("No feature selected. Please provide at least one valid argument. Enter '-h' for help.")
         exit(1)

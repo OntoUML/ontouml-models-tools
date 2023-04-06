@@ -1,21 +1,23 @@
 # OntoUML/UFO Models Tools
 
-The aim of the **ontouml-models-tools** is to offer a set of useful tools for the [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models) collaborators and administrators.
+The aim of the **ontouml-models-tools** is to offer a set of useful tools for
+the [OntoUML/UFO Catalog](https://github.com/unibz-core/ontouml-models) collaborators and administrators.
 
 ## Contents
 
 - [OntoUML/UFO Models Tools](#ontoumlufo-models-tools)
-  - [Contents](#contents)
-  - [Provided Tools](#provided-tools)
-    - [Data Quality Tools](#data-quality-tools)
-      - [Identification of Unwanted Characters](#identification-of-unwanted-characters)
-      - [Identification of Possible Multiplicities in Association Ends Roles](#identification-of-possible-multiplicities-in-association-ends-roles)
-      - [Identification of Possible Meta-properties Written as Names in Generalizations](#identification-of-possible-meta-properties-written-as-names-in-generalizations)
-      - [Identification of Stereotypes that can be Updated](#identification-of-stereotypes-that-can-be-updated)
-    - [Release File Generation](#release-file-generation)
-    - [Future Features](#future-features)
-  - [Execution Instructions](#execution-instructions)
-  - [Contributors](#contributors)
+    - [Contents](#contents)
+    - [Provided Tools](#provided-tools)
+        - [Data Quality Tools](#data-quality-tools)
+            - [Identification of Unwanted Characters](#identification-of-unwanted-characters)
+            - [Identification of Possible Multiplicities in Association Ends Roles](#identification-of-possible-multiplicities-in-association-ends-roles)
+            - [Identification of Possible Meta-properties Written as Names in Generalizations](#identification-of-possible-meta-properties-written-as-names-in-generalizations)
+            - [Identification of Stereotypes that can be Updated](#identification-of-stereotypes-that-can-be-updated)
+        - [Release File Generation](#release-file-generation)
+        - [Syntax Validation for TTL Files](#syntax-validation-for-ttl-files)
+        - [Future Features](#future-features)
+    - [Execution Instructions](#execution-instructions)
+    - [Contributors](#contributors)
 
 ## Provided Tools
 
@@ -38,7 +40,8 @@ unwanted characters in any elements:
 - derivation in name (presence of “/”)
 - imported class represented in name (presence of “::”)
 
-The ontouml-models-tools software reports the found problems in the `results_char.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
+The ontouml-models-tools software reports the found problems in the `results_char.csv` file, which is generated into the
+project’s folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `instance`: the name of the instance that has the identified problem.
@@ -47,21 +50,28 @@ The ontouml-models-tools software reports the found problems in the `results_cha
 
 #### Identification of Possible Multiplicities in Association Ends Roles
 
-This function verifies if there are numbers or asterisks in association end roles. When providing manual information to the modeling software, a modeler can easily insert the association cardinality (multiplicity) in the incorrect field, filling the association end role instead of the association end multiplicity.
+This function verifies if there are numbers or asterisks in association end roles. When providing manual information to
+the modeling software, a modeler can easily insert the association cardinality (multiplicity) in the incorrect field,
+filling the association end role instead of the association end multiplicity.
 
-The ontouml-models-tools software reports the found possible problems in the `results_ends.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
+The ontouml-models-tools software reports the found possible problems in the `results_ends.csv` file, which is generated
+into the project’s folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
-- `related_class`: a class that is related via the association that may have a problem (this information is provided for more easily locating the relation).
+- `related_class`: a class that is related via the association that may have a problem (this information is provided for
+  more easily locating the relation).
 - `relation_name`: the name of the association that contains the association end that may have a problem.
 - `end_value`: the value attributed to the association end role.
 - `problem`: a brief phrase describing the problem found.
 
 #### Identification of Possible Meta-properties Written as Names in Generalizations
 
-This function verifies if there are certain strings that indicate that the modeler has set generalization sets' meta-properties as a generalization name. The results display only cases in which the generalization has a name and is not part of any generalization set.
+This function verifies if there are certain strings that indicate that the modeler has set generalization sets'
+meta-properties as a generalization name. The results display only cases in which the generalization has a name and is
+not part of any generalization set.
 
-The ontouml-models-tools software reports the found possible problems in the `results_gens.csv` file, which is generated into the project’s folder. This file is a *csv* with the following headers:
+The ontouml-models-tools software reports the found possible problems in the `results_gens.csv` file, which is generated
+into the project’s folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `generalization_name`: the name provided by the modeler to the generalization.
@@ -86,9 +96,15 @@ into the project’s folder. This file is a *csv* with the following headers:
 ### Release File Generation
 
 This feature can be executed by providing the *-r* argument. When selected, it will generate a single ttl file as output
-following the nomenclature `ontouml-models-<YYYY>-<MM>-<DD>.ttl`, with Y, M, and D being substituted by the current
+following the nomenclature `ontouml-models-<YYYY><MM><DD>.ttl`, with Y, M, and D being substituted by the current
 date. The output file contains all information available in every ttl file that is part of the catalog, except from
 the [shape files](https://github.com/OntoUML/ontouml-models/tree/master/shapes).
+
+### Syntax Validation for TTL Files
+
+Uses the [MMLab TurtleValidator](https://github.com/MMLab/TurtleValidator), an external command line application, for validating every TTL file in the catalog folder.
+
+This functionality requires the previous installation of the [MMLab TurtleValidator](https://github.com/MMLab/TurtleValidator). The installation instructions can be found in the provided link.
 
 ### Future Features
 
@@ -135,4 +151,6 @@ options:
 
 - [Pedro Paulo Favato Barcelos](https://orcid.org/0000-0003-2736-7817) [[GitHub](https://github.com/pedropaulofb)] [[LinkedIn](https://www.linkedin.com/in/pedropaulofavatobarcelos/)]
 
-Please get in touch with this software’s contributors using the provided links or **preferably** [open an issue](https://github.com/unibz-core/ontouml-models-tools/issues/) in case of doubts or problems found.
+Please get in touch with this software’s contributors using the provided links or **
+preferably** [open an issue](https://github.com/unibz-core/ontouml-models-tools/issues/) in case of doubts or problems
+found.
