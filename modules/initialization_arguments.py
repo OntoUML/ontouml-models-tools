@@ -38,7 +38,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     automation_group.add_argument("-r", "--release", action='store_true',
                                   help="Execute release file generation.")
 
-    automation_group.add_argument("-t", "--syntax_validation", action='store_true',
+    automation_group.add_argument("-t", "--validate_ttl", action='store_true',
                                   help="Validate the syntax of all ttl files.")
 
     # Execute arguments parser
@@ -48,7 +48,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
         "catalog_path": arguments.catalog_path,
         "verify_data_quality": arguments.data_quality,
         "generate_release": arguments.release,
-        "validate_syntax": arguments.syntax_validation
+        "validate_ttl": arguments.syntax_validation
     }
 
     logger.debug(f"Arguments Parsed. Obtained values are: {received_arguments}")
