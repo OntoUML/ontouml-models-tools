@@ -70,7 +70,7 @@ def generate_release_file(catalog_path: str):
     """ Generates a single file with all content from all ttl files in the catalog to be used as a release version. """
 
     aggregated_graph = Graph()
-    today = date.today().strftime("%Y/%M/%D")
+    today = date.today().strftime("%Y%m%d")
 
     release_file_name = f"./ontouml-models-{today}.ttl"
 
