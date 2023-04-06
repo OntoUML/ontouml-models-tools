@@ -149,7 +149,7 @@ if __name__ == "__main__":
         run_data_quality_verifications(arguments)
     elif arguments["generate_release"]:
         generate_release_file(arguments["catalog_path"])
-    elif arguments["validate_syntax"]:
+    elif arguments["validate_ttl"]:
         validate_ttl_syntax(arguments["catalog_path"])
     else:
         logger.error("No feature selected. Please provide at least one valid argument. Enter '-h' for help.")

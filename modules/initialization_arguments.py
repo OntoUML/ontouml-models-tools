@@ -48,7 +48,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
         "catalog_path": arguments.catalog_path,
         "verify_data_quality": arguments.data_quality,
         "generate_release": arguments.release,
-        "validate_ttl": arguments.syntax_validation
+        "validate_ttl": arguments.validate_ttl
     }
 
     logger.debug(f"Arguments Parsed. Obtained values are: {received_arguments}")
