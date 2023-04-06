@@ -110,13 +110,26 @@ def validate_ttl_syntax(catalog_path):
     len_list_ttl_files = len(list_ttl_files)
     logger.info(f"Starting ttl syntax validation of {len_list_ttl_files} files.")
 
-    for ttl_file in list_ttl_files:
+    problems_list = []
+
+    for count, ttl_file in enumerate(list_ttl_files):
+
         file_name = ttl_file.split("\\ontouml-models\\", 1)[1]
         ttl_output = subprocess.run(f"ttl ..\\ontouml-models\\{file_name}", shell=True, capture_output=True)
-        if "Validator finished with 0 warnings and 0 errors." in str(ttl_output.stdout):
-            logger.info(f"{file_name} is valid.")
+
+        result = str(ttl_output.stdout)
+        result = result[2:-3].replace("\\n", " ")
+
+        if "Validator finished with 0 warnings and 0 errors" in result:
+            logger.info(f"File {count + 1}/{len_list_ttl_files}: {file_name} is valid.")
         else:
-            logger.warning(f"{file_name} has invalid syntax. {ttl_output.stdout}")
+            logger.warning(f"File {count + 1}/{len_list_ttl_files}: {file_name} has invalid syntax. {result}")
+            problems_list.append(file_name)
+
+    if problems_list:
+        logger.warning(f"VALIDATION FINISHED. The verification found {len(problems_list)} problem(s): {problems_list}")
+    else:
+        logger.info(f"VALIDATION FINISHED. No problems found in the verification of {len_list_ttl_files} files.")
 
 
 if __name__ == "__main__":
