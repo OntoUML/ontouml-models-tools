@@ -145,6 +145,7 @@ options:
   -v, --version       Prints the software version and exit.
   -d, --data_quality  Execute data quality verifications.
   -r, --release       Execute release file generation.
+  -t, --validate_ttl  Validate the syntax of all ttl files.
 ```
 
 ## Contributors
