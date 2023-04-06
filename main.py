@@ -77,11 +77,19 @@ def generate_release_file(catalog_path: str):
     # Get all TTL files' complete paths
     logger.info(f"Identifying all TTL files in directory {catalog_path} and in its subdirectories.")
 
-    list_ttl_files = list_all_ttl_files(catalog_path, "-shape.ttl")
+    list_ttl_files = list_all_ttl_files(catalog_path)
+
+    # Removing shapes files. Using [:] keeps the reference to the list
+    # Reference: https://stackoverflow.com/questions/30764196/find-and-delete-list-elements-if-matching-a-string)
+    list_ttl_files[:] = [i for i in list_ttl_files if "-shape.ttl" not in i]
+
+    # Removing vocabulary.ttl
+    list_ttl_files[:] = [i for i in list_ttl_files if "\\vocabulary.ttl" not in i]
+
     len_list_tt_files = len(list_ttl_files)
 
     # Load all TTL files in a single graph
-    logger.info("Generating single graph containing all TTL files' information.")
+    logger.info(f"Generating single graph containing information from {len_list_tt_files} TTL files.")
     for count, ttl_file in enumerate(list_ttl_files):
         logger.info(f"Including file {count + 1}/{len_list_tt_files}: {ttl_file}")
         item_graph = load_all_graph_safely(ttl_file)
@@ -98,7 +106,7 @@ def generate_release_file(catalog_path: str):
     aggregated_graph.bind("vann", "http://purl.org/vocab/vann/")
 
     # Saving graph as release file
-    logger.info("Generating single graph containing all TTL files' information.")
+    logger.info(f"Saving a single file with graph's content.")
     save_ontology_file_safely(aggregated_graph, release_file_name)
     logger.info(f"Release file successfully saved as {release_file_name}.")
 
