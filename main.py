@@ -123,7 +123,7 @@ def validate_ttl_syntax(catalog_path):
     for count, ttl_file in enumerate(list_ttl_files):
 
         file_name = ttl_file.split("\\ontouml-models\\", 1)[1]
-        ttl_output = subprocess.run(f"ttl ..\\ontouml-models\\{file_name}", shell=True, capture_output=True)
+        ttl_output = subprocess.run(f"ttl {catalog_path[2:]}\\{file_name}", shell=True, capture_output=True)
 
         result = str(ttl_output.stdout)
         result = result[2:-3].replace("\\n", " ")

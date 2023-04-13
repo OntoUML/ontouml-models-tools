@@ -102,9 +102,12 @@ the [shape files](https://github.com/OntoUML/ontouml-models/tree/master/shapes).
 
 ### Syntax Validation for TTL Files
 
-Uses the [MMLab TurtleValidator](https://github.com/MMLab/TurtleValidator), an external command line application, for validating every TTL file in the catalog folder.
+Uses the [MMLab TurtleValidator](https://github.com/MMLab/TurtleValidator), an external command line application, for
+validating every TTL file in the catalog folder.
 
-This functionality requires the previous installation of the [MMLab TurtleValidator](https://github.com/MMLab/TurtleValidator). The installation instructions can be found in the provided link.
+This functionality requires the previous installation of
+the [MMLab TurtleValidator](https://github.com/MMLab/TurtleValidator). The installation instructions can be found in the
+provided link.
 
 ### Future Features
 
