@@ -116,7 +116,7 @@ def validate_ttl_syntax(catalog_path):
 
     list_ttl_files = list_all_ttl_files(catalog_path)
     len_list_ttl_files = len(list_ttl_files)
-    logger.info(f"Starting ttl syntax validation of {len_list_ttl_files} files.")
+    logger.info(f"Starting ttl syntax validation of {len_list_ttl_files} files in {catalog_path[2:]}.")
 
     problems_list = []
 
