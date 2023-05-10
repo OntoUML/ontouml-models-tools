@@ -17,7 +17,7 @@ from modules.utils.utils_rdf import load_all_graph_safely, save_ontology_file_sa
 
 SOFTWARE_ACRONYM = "OntoUML/UFO Catalog Tools"
 SOFTWARE_NAME = "ontouml-models-tools"
-SOFTWARE_VERSION = "0.23.03.23"
+SOFTWARE_VERSION = "0.23.05.10"
 SOFTWARE_URL = "https://github.com/OntoUML/ontouml-models-tools"
 
 
