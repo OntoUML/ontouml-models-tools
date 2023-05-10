@@ -24,6 +24,10 @@ SOFTWARE_URL = "https://github.com/OntoUML/ontouml-models-tools"
 def run_data_quality_verifications(arguments):
     """ Calls every data quality verification features for the catalog. """
 
+    # Treating user argument
+    if arguments["catalog_path"][-1] != "/":
+        arguments["catalog_path"] += "/"
+
     # Building directories structure
     datasets_list = get_list_unhidden_directories(arguments["catalog_path"] + "/models/")
     datasets_list.sort()
