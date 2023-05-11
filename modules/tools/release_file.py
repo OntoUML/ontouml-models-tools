@@ -4,7 +4,7 @@ from datetime import date
 from rdflib import Graph
 
 from modules.logger_config import initialize_logger
-from modules.utils.utils_catalog import list_all_ttl_files
+from modules.utils.utils_catalog import list_all_files_with_filetype
 from modules.utils.utils_rdf import load_all_graph_safely, save_ontology_file_safely
 
 LOGGER = initialize_logger()
@@ -21,7 +21,7 @@ def generate_release_file(catalog_path: str):
     # Get all TTL files' complete paths
     LOGGER.info(f"Identifying all TTL files in directory {catalog_path} and in its subdirectories.")
 
-    list_ttl_files = list_all_ttl_files(catalog_path)
+    list_ttl_files = list_all_files_with_filetype(catalog_path)
 
     # Removing shapes files. Using [:] keeps the reference to the list
     # Reference: https://stackoverflow.com/questions/30764196/find-and-delete-list-elements-if-matching-a-string)

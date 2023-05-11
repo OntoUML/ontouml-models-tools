@@ -2,7 +2,7 @@
 import subprocess
 
 from modules.logger_config import initialize_logger
-from modules.utils.utils_catalog import list_all_ttl_files
+from modules.utils.utils_catalog import list_all_files_with_filetype
 
 LOGGER = initialize_logger()
 
@@ -10,7 +10,7 @@ LOGGER = initialize_logger()
 def validate_ttl_syntax(catalog_path: str):
     """ Uses external ttl software to validate the syntax of all ttl files in the catalog. """
 
-    list_ttl_files = list_all_ttl_files(catalog_path)
+    list_ttl_files = list_all_files_with_filetype(catalog_path)
     len_list_ttl_files = len(list_ttl_files)
     LOGGER.info(f"Starting ttl syntax validation of {len_list_ttl_files} files in {catalog_path[2:]}.")
 

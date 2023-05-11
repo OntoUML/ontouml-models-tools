@@ -32,7 +32,7 @@ def treat_arguments(software_acronym, software_name, software_version, software_
 
     automation_group = arguments_parser.add_mutually_exclusive_group()
 
-    automation_group.add_argument("-d", "--data_quality.py", action='store_true',
+    automation_group.add_argument("-d", "--data_quality", action='store_true',
                                   help="Execute data quality verifications.")
 
     automation_group.add_argument("-j", "--fix_json", action='store_true',
