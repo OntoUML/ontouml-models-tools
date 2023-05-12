@@ -35,9 +35,6 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     automation_group.add_argument("-d", "--data_quality", action='store_true',
                                   help="Execute data quality verifications.")
 
-    automation_group.add_argument("-j", "--fix_json", action='store_true',
-                                  help="Fix small issues on the ontology.json file.")
-
     automation_group.add_argument("-r", "--release", action='store_true',
                                   help="Execute release file generation.")
 
@@ -50,7 +47,6 @@ def treat_arguments(software_acronym, software_name, software_version, software_
     received_arguments = {
         "catalog_path": arguments.catalog_path,
         "verify_data_quality": arguments.data_quality,
-        "fix_json": arguments.fix_json,
         "generate_release": arguments.release,
         "validate_ttl": arguments.validate_ttl
     }
