@@ -23,22 +23,26 @@ def fix_json(catalog_path: str):
     json_files = list_all_files_with_filetype(catalog_path, "json")
 
     for json_file in json_files:
-
-        print(f"Working JSON: {json_file}")
-
         # returns JSON object as a dictionary
         try:
-
             # Opening specific JSON file
             with open(json_file, 'r', encoding='utf-8', newline='') as file:
                 data = json.load(file, strict=False)
-                print("JSON is open")
+                logger.info(f"JSON file {json_file} successfully opened!")
 
             for key in data.keys():
                 print(f"{key = } ({type(data[key])})")
+                if isinstance(data[key], dict):
+                    for key2 in data[key].keys():
+                        print(f"{key2 = } ({type(data[key][key2])})")
+
+            # dict = 1
+            # while dict > 0:
+            #     print(data[key])
+            #     dict = 0
 
         except:
-            print("JSON NOT open!!!")
+            logger.error(f"JSON file {json_file} could not be opened!")
         print()
 
 
