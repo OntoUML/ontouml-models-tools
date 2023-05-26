@@ -50,7 +50,8 @@ project’s `result` folder. This file is a *csv* with the following headers:
 
 #### Identification of Possible Multiplicities in Association Ends Roles
 
-This function verifies if there are numbers or asterisks in association end roles. When providing manual information to
+This functionality verifies if there are numbers or asterisks in association end roles. When providing manual
+information to
 the modeling software, a modeler can easily insert the association cardinality (multiplicity) in the incorrect field,
 filling the association end role instead of the association end multiplicity.
 
@@ -64,24 +65,30 @@ into the project’s `result` folder. This file is a *csv* with the following he
 - `end_value`: the value attributed to the association end role.
 - `problem`: a brief phrase describing the problem found.
 
-#### Identification of Possible Meta-properties Written as Names in Generalizations
+#### Identification of Possible Problems in Generalizations
 
-This function verifies if there are certain strings that indicate that the modeler has set generalization sets'
-meta-properties as a generalization name. The results display only cases in which the generalization has a name and is
-not part of any generalization set.
+This functionality performs three verifications.
+
+1) It verifies if there are certain strings that indicate that the modeler has set generalization sets'
+   meta-properties as a generalization name. The results display only cases in which the generalization has a name and
+   is
+   not part of any generalization set.
+2) It verifies if there are generalization sets with both covering and disjoint metaproperties set as False.
+3) It verifies if there are generalization sets with less than two generalizations as their parts.
 
 The ontouml-models-tools software reports the found possible problems in the `results_gens.csv` file, which is generated
 into the project’s `result` folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `generalization_name`: the name provided by the modeler to the generalization.
-- `specific_name` the name of the subclass that participates in the generalization.
-- `general_name`: the name of the superclass that participates in the generalization.
+- `specific_name` For 1: the name of the subclass that participates in the generalization. For 2) empty, For 3)
+  information about the generalization set's quantity of generalizations.
+- `general_name`: For 1: the name of the superclass that participates in the generalization. For 2 and 3) empty.
 - `problem`: a brief phrase describing the problem found.
 
 #### Identification of Stereotypes that can be Updated
 
-This function verifies if there are stereotypes that can be substituted by a more recent name, as defined in
+This functionality verifies if there are stereotypes that can be substituted by a more recent name, as defined in
 the [catalog's documentation](https://github.com/OntoUML/ontouml-models/wiki/Frequently-Asked-Questions#how-do-i-document-stereotypes-that-are-not-part-of-the-current-ontouml-profile)
 .
 

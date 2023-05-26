@@ -1,6 +1,8 @@
 """ Verifications over the catalog.ttl file. """
 from rdflib import RDF, URIRef, Graph
 
+from modules.tools.data_quality.generalization_verifications import get_gens_properties_in_names, \
+    get_gens_without_properties, get_insuficient_gens
 from modules.tools.data_quality.problem_classes import ProblemChar, ProblemEnds, ProblemGeneralizations, \
     ProblemOldStereotypes
 from modules.utils.utils_general import contains_number
@@ -105,32 +107,10 @@ def verify_generalizations_properties(graph: Graph) -> list[ProblemGeneralizatio
     :rtype: list[ProblemGeneralizations]
     """
 
-    # Get all generalizations that have a name and that are not in generalization sets
-    knows_query = """
-        PREFIX ontouml: <https://w3id.org/ontouml#>
-        SELECT DISTINCT ?gen_inst_name ?specific_name ?general_name
-        WHERE {
-            ?gen_inst rdf:type ontouml:Generalization .
-            ?gen_inst ontouml:name ?gen_inst_name .
-            ?gen_inst ontouml:general ?general .
-            ?general ontouml:name ?general_name .
-            ?gen_inst ontouml:specific ?specific .
-            ?specific ontouml:name ?specific_name .
-            FILTER NOT EXISTS {?gs_inst ontouml:generalization ?gen_inst}
-        }"""
-
-    qres = graph.query(knows_query)
-
-    substring_list = ["{", "}", "over", "disj", "joint", "compl", "cover"]
-
     problems_list_generalizations = []
-
-    for gen in qres:
-        if any(map(gen.gen_inst_name.__contains__, substring_list)):
-            problems_list_generalizations.append(ProblemGeneralizations(gen.gen_inst_name.value,
-                                                                        gen.specific_name.value,
-                                                                        gen.general_name.value,
-                                                                        "property in generalization name"))
+    problems_list_generalizations += get_gens_properties_in_names(graph)
+    problems_list_generalizations += get_gens_without_properties(graph)
+    problems_list_generalizations += get_insuficient_gens(graph)
 
     return problems_list_generalizations
 
