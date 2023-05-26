@@ -41,7 +41,7 @@ unwanted characters in any elements:
 - imported class represented in name (presence of “::”)
 
 The ontouml-models-tools software reports the found problems in the `results_char.csv` file, which is generated into the
-project’s folder. This file is a *csv* with the following headers:
+project’s `result` folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `instance`: the name of the instance that has the identified problem.
@@ -55,7 +55,7 @@ the modeling software, a modeler can easily insert the association cardinality (
 filling the association end role instead of the association end multiplicity.
 
 The ontouml-models-tools software reports the found possible problems in the `results_ends.csv` file, which is generated
-into the project’s folder. This file is a *csv* with the following headers:
+into the project’s `result` folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `related_class`: a class that is related via the association that may have a problem (this information is provided for
@@ -71,7 +71,7 @@ meta-properties as a generalization name. The results display only cases in whic
 not part of any generalization set.
 
 The ontouml-models-tools software reports the found possible problems in the `results_gens.csv` file, which is generated
-into the project’s folder. This file is a *csv* with the following headers:
+into the project’s `result` folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `generalization_name`: the name provided by the modeler to the generalization.
@@ -86,7 +86,7 @@ the [catalog's documentation](https://github.com/OntoUML/ontouml-models/wiki/Fre
 .
 
 The ontouml-models-tools software reports the found possible problems in the `results_ster.csv` file, which is generated
-into the project’s folder. This file is a *csv* with the following headers:
+into the project’s `result` folder. This file is a *csv* with the following headers:
 
 - `dataset`: the dataset in which the identified problem is located.
 - `class_name`: the name of the class with the outdated stereotype.
@@ -96,9 +96,9 @@ into the project’s folder. This file is a *csv* with the following headers:
 ### Release File Generation
 
 This feature can be executed by providing the *-r* argument. When selected, it will generate a single ttl file as output
-following the nomenclature `ontouml-models-<YYYY><MM><DD>.ttl`, with Y, M, and D being substituted by the current
-date. The output file contains all information available in every ttl file that is part of the catalog, except from
-the [shape files](https://github.com/OntoUML/ontouml-models/tree/master/shapes).
+in the `results` folder following the nomenclature `ontouml-models-<YYYY><MM><DD>.ttl`, with Y, M, and D being
+substituted by the current date. The output file contains all information available in every ttl file that is part of
+the catalog, except from the [shape files](https://github.com/OntoUML/ontouml-models/tree/master/shapes).
 
 ### Syntax Validation for TTL Files
 
