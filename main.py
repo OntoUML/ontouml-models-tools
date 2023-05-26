@@ -8,7 +8,7 @@ from modules.tools.validate_ttl_syntax import validate_ttl_syntax
 
 SOFTWARE_ACRONYM = "OntoUML/UFO Catalog Tools"
 SOFTWARE_NAME = "ontouml-models-tools"
-SOFTWARE_VERSION = "0.23.05.11"
+SOFTWARE_VERSION = "0.23.05.26"
 SOFTWARE_URL = "https://github.com/OntoUML/ontouml-models-tools"
 
 if __name__ == "__main__":
