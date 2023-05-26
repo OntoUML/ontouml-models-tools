@@ -4,6 +4,7 @@ from datetime import date
 from rdflib import Graph
 
 from modules.logger_config import initialize_logger
+from modules.tools.data_quality.results_file import create_directory_if_not_exists
 from modules.utils.utils_catalog import list_all_files_with_filetype
 from modules.utils.utils_rdf import load_all_graph_safely, save_ontology_file_safely
 
@@ -16,7 +17,11 @@ def generate_release_file(catalog_path: str):
     aggregated_graph = Graph()
     today = date.today().strftime("%Y%m%d")
 
-    release_file_name = f"./ontouml-models-{today}.ttl"
+    # If directory 'results_directory' not exists, create it
+    results_directory = "results"
+    create_directory_if_not_exists(results_directory)
+
+    release_file_name = f"results/ontouml-models-{today}.ttl"
 
     # Get all TTL files' complete paths
     LOGGER.info(f"Identifying all TTL files in directory {catalog_path} and in its subdirectories.")

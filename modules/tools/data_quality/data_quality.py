@@ -6,7 +6,7 @@ from modules.tools.data_quality.catalog_verifications import verify_unwanted_cha
 from modules.tools.data_quality.results_file import create_output_char_file, create_output_ster_file, \
     create_output_ends_file, create_output_gens_file, append_problems_output_char_file, \
     append_problems_output_ends_file, append_problems_output_generalizations_file, \
-    append_problems_output_old_stereotypes_file
+    append_problems_output_old_stereotypes_file, create_directory_if_not_exists
 from modules.utils.utils_general import get_list_unhidden_directories
 from modules.utils.utils_rdf import load_all_graph_safely
 
@@ -15,6 +15,10 @@ LOGGER = initialize_logger()
 
 def run_data_quality_verifications(arguments: dict):
     """ Calls every data quality verification features for the catalog. """
+
+    # If directory 'results_directory' not exists, create it
+    results_directory = "results"
+    create_directory_if_not_exists(results_directory)
 
     # Building directories structure
     datasets_list = get_list_unhidden_directories(arguments["catalog_path"] + "/models/")
@@ -36,11 +40,13 @@ def run_data_quality_verifications(arguments: dict):
 
         evaluated_ontology = load_all_graph_safely(dataset_ontology_location)
 
+        # Executing verifications
         problems_char_list = verify_unwanted_characters(evaluated_ontology)
         problems_ends_list = verify_association_ends(evaluated_ontology)
         problems_gens_list = verify_generalizations_properties(evaluated_ontology)
         problems_ster_list = verify_old_stereotypes(evaluated_ontology)
 
+        # Registering problems
         if problems_char_list:
             append_problems_output_char_file(dataset_name, problems_char_list)
             LOGGER.warning(f"Dataset {dataset_name} has {len(problems_char_list)} problem_char case(s).")

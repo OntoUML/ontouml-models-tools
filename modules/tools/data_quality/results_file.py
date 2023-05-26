@@ -1,12 +1,30 @@
 """ Results CSV Output File """
 import csv
+import os
 
 from modules.logger_config import initialize_logger
+from modules.utils.error_treatment import report_error_io_write
 
-CSV_CHAR_FILE = "results_char.csv"
-CSV_ENDS_FILE = "results_ends.csv"
-CSV_GENS_FILE = "results_gens.csv"
-CSV_STER_FILE = "results_ster.csv"
+CSV_CHAR_FILE = "results/results_char.csv"
+CSV_ENDS_FILE = "results/results_ends.csv"
+CSV_GENS_FILE = "results/results_gens.csv"
+CSV_STER_FILE = "results/results_ster.csv"
+
+
+def create_directory_if_not_exists(directory_path: str) -> None:
+    """ Checks if the directory that has the path received as argument exists.
+    If it does, do nothing. If it does not, create it.
+
+    :param directory_path: Path to the directory to be created (if it does not exist).
+    :type directory_path: str
+    """
+
+    try:
+        if not os.path.exists(directory_path):
+            os.makedirs(directory_path)
+    except OSError as error:
+        file_description = f"directory"
+        report_error_io_write(directory_path, file_description, error)
 
 
 def create_output_char_file():

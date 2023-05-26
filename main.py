@@ -1,6 +1,5 @@
 """ Main function for the ontouml-models-tools application. """
 import json
-from base64 import encodebytes, encode
 
 from modules.initialization_arguments import treat_arguments
 from modules.logger_config import initialize_logger
@@ -8,7 +7,6 @@ from modules.tools.data_quality.data_quality import run_data_quality_verificatio
 from modules.tools.release_file import generate_release_file
 from modules.tools.validate_ttl_syntax import validate_ttl_syntax
 from modules.utils.utils_catalog import list_all_files_with_filetype
-from pathlib import Path
 
 SOFTWARE_ACRONYM = "OntoUML/UFO Catalog Tools"
 SOFTWARE_NAME = "ontouml-models-tools"
