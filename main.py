@@ -22,7 +22,7 @@ if __name__ == "__main__":
 
     # Switching tool according to received arguments
     if arguments["verify_data_quality"]:
-        run_data_quality_verifications(arguments)
+        run_data_quality_verifications(arguments["catalog_path"])
     elif arguments["generate_release"]:
         generate_release_file(arguments["catalog_path"])
     elif arguments["validate_ttl"]:

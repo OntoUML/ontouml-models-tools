@@ -1,14 +1,13 @@
 """ Results CSV Output File """
 import csv
+import inspect
 import os
 
 from modules.logger_config import initialize_logger
-from modules.utils.error_treatment import report_error_io_write
+from modules.tools.data_quality.catalog_verifications import DataQualityProblemClass
+from modules.utils.error_treatment import report_error_io_write, report_error_end_of_switch
 
-CSV_CHAR_FILE = "results/results_char.csv"
-CSV_ENDS_FILE = "results/results_ends.csv"
-CSV_GENS_FILE = "results/results_gens.csv"
-CSV_STER_FILE = "results/results_ster.csv"
+LOGGER = initialize_logger()
 
 
 def create_directory_if_not_exists(directory_path: str) -> None:
@@ -22,180 +21,98 @@ def create_directory_if_not_exists(directory_path: str) -> None:
     try:
         if not os.path.exists(directory_path):
             os.makedirs(directory_path)
+            LOGGER.debug(f"CSV output file {directory_path} successfully created.")
     except OSError as error:
         file_description = f"directory"
         report_error_io_write(directory_path, file_description, error)
 
 
-def create_output_char_file():
-    """ Create an CSV file containing only a header.
-        Header is: dataset, instance, type, problem
+def get_csv_header(feature_code: str) -> list[str]:
+    """ Returns the argument feature's corresponding CSV header to be used in the CSV output file.
 
-        Created once in the execution of the software.
-        If file already exists from previous execution, it is overwritten.
+    :param feature_code: Data quality specific feature that is processed.
+    :type feature_code: list[str]
     """
 
-    logger = initialize_logger()
+    csv_header = []
 
-    csv_header = ["dataset", "instance", "type", "problem"]
+    if feature_code == "char":
+        csv_header = ["dataset", "instance", "type", "problem"]
+    elif feature_code == "ends":
+        csv_header = ["dataset", "related_class", "relation_name", "end_value", "problem"]
+    elif feature_code == "gens":
+        csv_header = ["dataset", "generalization_name", "specific_name", "general_name", "problem"]
+    elif feature_code == "ster":
+        csv_header = ["dataset", "class_name", "old_stereotype", "new_stereotype"]
+    else:
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch("feature_code", current_function)
 
-    try:
-        with open(CSV_CHAR_FILE, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(csv_header)
-        logger.debug(f"CSV output file {CSV_CHAR_FILE} successfully created.")
-    except OSError as error:
-        logger.error(f"Could not save {CSV_CHAR_FILE} file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
+    return csv_header
 
 
-def create_output_ends_file():
-    """ Create an CSV file containing only a header.
-        Header is: dataset, related_class, end_value, problem
+def get_feature_problem_content(dataset_name: str, feature_code: str, problem: DataQualityProblemClass) -> list:
+    """ Returns the argument feature's corresponding CSV content to be used in the CSV output file.
 
-        Created once in the execution of the software.
-        If file already exists from previous execution, it is overwritten.
+    :param dataset_name: Dataset that is going to have its problem reported.
+    :type dataset_name: str
+    :param feature_code: Data quality specific feature that is processed.
+    :type feature_code: str
+    :param problem: Specific problem for the dataset.
+    :type problem: DataQualityProblemClass
+    :return: List with specific problems to be printed in the csv file.
+    :rtype: list
     """
 
-    logger = initialize_logger()
+    if feature_code == "char":
+        csv_row = [dataset_name, problem.instance, problem.type, problem.description]
+    elif feature_code == "ends":
+        csv_row = [dataset_name, problem.related_class, problem.relation_name, problem.end_name,
+                   problem.description]
+    elif feature_code == "gens":
+        csv_row = [dataset_name, problem.generalization_name, problem.specific_name, problem.general_name,
+                   problem.description]
+    elif feature_code == "ster":
+        csv_row = [dataset_name, problem.class_name, problem.old_stereotype, problem.new_stereotype]
+    else:
+        current_function = inspect.stack()[0][3]
+        report_error_end_of_switch("feature_code", current_function)
 
-    csv_header = ["dataset", "related_class", "relation_name", "end_value", "problem"]
-
-    try:
-        with open(CSV_ENDS_FILE, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(csv_header)
-        logger.debug(f"CSV output file {CSV_ENDS_FILE} successfully created.")
-    except OSError as error:
-        logger.error(f"Could not save {CSV_ENDS_FILE} file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
+    return csv_row
 
 
-def create_output_gens_file():
-    """ Create an CSV file containing only a header.
-        Header is: dataset, generalization_name, specific_name, general_name, problem
+def create_output_csv_file(feature_code: str):
+    """ Create an CSV file containing only a header according to the feature_code received as argument.
+    Created once in the execution of the software. If file already exists from previous execution, it is overwritten.
 
-        Created once in the execution of the software.
-        If file already exists from previous execution, it is overwritten.
+    :param feature_code: Code for the feature that is going to have its result csv file created.
+    :type feature_code: str
     """
 
-    logger = initialize_logger()
-
-    csv_header = ["dataset", "generalization_name", "specific_name", "general_name", "problem"]
+    csv_file_path = "results/results_" + feature_code + ".csv"
+    csv_file_header = get_csv_header(feature_code)
 
     try:
-        with open(CSV_GENS_FILE, 'w', encoding='utf-8', newline='') as f:
+        with open(csv_file_path, 'w', encoding='utf-8', newline='') as f:
             writer = csv.writer(f)
-            writer.writerow(csv_header)
-        logger.debug(f"CSV output file {CSV_GENS_FILE} successfully created.")
+            writer.writerow(csv_file_header)
+        LOGGER.debug(f"CSV output file {csv_file_path} successfully created.")
     except OSError as error:
-        logger.error(f"Could not save {CSV_GENS_FILE} file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
+        report_error_io_write(csv_file_path, f"csv output file for {feature_code} feature", error)
 
 
-def create_output_ster_file():
-    """ Create an CSV file containing only a header.
-        Header is: dataset, class_name, old_stereotype, new_stereotype
+def append_problems_output_csv_file(dataset_name: str, feature_code: str, problems_list: list[DataQualityProblemClass]):
+    """ Saves all problems identified for the selected feature in the corresponding CSV output file. """
 
-        Created once in the execution of the software.
-        If file already exists from previous execution, it is overwritten.
-    """
-
-    logger = initialize_logger()
-
-    csv_header = ["dataset", "class_name", "old_stereotype", "new_stereotype"]
+    csv_file_path = "results/results_" + feature_code + ".csv"
 
     try:
-        with open(CSV_STER_FILE, 'w', encoding='utf-8', newline='') as f:
-            writer = csv.writer(f)
-            writer.writerow(csv_header)
-        logger.debug(f"CSV output file {CSV_STER_FILE} successfully created.")
-    except OSError as error:
-        logger.error(f"Could not save {CSV_STER_FILE} file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
-
-
-def append_problems_output_char_file(dataset_name, problems_list):
-    """ Receives dataset and character problems information and saves in CSV output file.  """
-
-    logger = initialize_logger()
-
-    try:
-        with open(CSV_CHAR_FILE, 'a', encoding='utf-8', newline='') as f:
+        with open(csv_file_path, 'a', encoding='utf-8', newline='') as f:
             for problem in problems_list:
                 writer = csv.writer(f)
-                csv_row = [dataset_name, problem.instance, problem.type, problem.description]
+                csv_row = get_feature_problem_content(dataset_name, feature_code, problem)
                 writer.writerow(csv_row)
-        logger.debug(f"CSV output file successfully updated for dataset {dataset_name} "
+        LOGGER.debug(f"CSV output file successfully updated for dataset {dataset_name} "
                      f"with {len(problems_list)} entries.")
-
     except OSError as error:
-        logger.error(f"Could not save {CSV_CHAR_FILE} csv file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
-
-
-def append_problems_output_ends_file(dataset_name, problems_list):
-    """ Receives dataset and association ends problems information and saves in CSV output file.  """
-
-    logger = initialize_logger()
-
-    try:
-        with open(CSV_ENDS_FILE, 'a', encoding='utf-8', newline='') as f:
-            for problem in problems_list:
-                writer = csv.writer(f)
-                csv_row = [dataset_name, problem.related_class, problem.relation_name, problem.end_name,
-                           problem.description]
-                writer.writerow(csv_row)
-        logger.debug(f"CSV output file successfully updated for dataset {dataset_name} "
-                     f"with {len(problems_list)} entries.")
-
-    except OSError as error:
-        logger.error(f"Could not save {CSV_ENDS_FILE} csv file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
-
-
-def append_problems_output_generalizations_file(dataset_name, problems_list):
-    """ Receives dataset and generalizations problems information and saves in CSV output file.  """
-
-    logger = initialize_logger()
-
-    try:
-        with open(CSV_GENS_FILE, 'a', encoding='utf-8', newline='') as f:
-            for problem in problems_list:
-                writer = csv.writer(f)
-                csv_row = [dataset_name, problem.generalization_name, problem.specific_name, problem.general_name,
-                           problem.description]
-                writer.writerow(csv_row)
-        logger.debug(f"CSV output file successfully updated for dataset {dataset_name} "
-                     f"with {len(problems_list)} entries.")
-
-    except OSError as error:
-        logger.error(f"Could not save {CSV_GENS_FILE} csv file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
-
-
-def append_problems_output_old_stereotypes_file(dataset_name, problems_list):
-    """ Receives dataset and old stereotypes problems information and saves in CSV output file.  """
-
-    logger = initialize_logger()
-
-    try:
-        with open(CSV_STER_FILE, 'a', encoding='utf-8', newline='') as f:
-            for problem in problems_list:
-                writer = csv.writer(f)
-                csv_row = [dataset_name, problem.class_name, problem.old_stereotype, problem.new_stereotype]
-                writer.writerow(csv_row)
-        logger.debug(f"CSV output file successfully updated for dataset {dataset_name} "
-                     f"with {len(problems_list)} entries.")
-
-    except OSError as error:
-        logger.error(f"Could not save {CSV_STER_FILE} csv file. Exiting program."
-                     f"System error reported: {error}")
-        exit(1)
+        report_error_io_write(csv_file_path, f"csv output content for {feature_code} feature", error)
