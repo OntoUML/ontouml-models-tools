@@ -5,7 +5,8 @@ from rdflib import Graph
 
 from modules.logger_config import initialize_logger
 from modules.tools.data_quality.catalog_verifications import verify_unwanted_characters, verify_association_ends, \
-    verify_generalizations_properties, verify_old_stereotypes, DataQualityProblemClass
+    verify_generalizations_properties, verify_old_stereotypes
+from modules.tools.data_quality.problem_classes import DataQualityProblemClass
 from modules.tools.data_quality.results_file import create_directory_if_not_exists, create_output_csv_file, \
     append_problems_output_csv_file
 from modules.utils.error_treatment import report_error_end_of_switch

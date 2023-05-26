@@ -4,7 +4,7 @@ import inspect
 import os
 
 from modules.logger_config import initialize_logger
-from modules.tools.data_quality.catalog_verifications import DataQualityProblemClass
+from modules.tools.data_quality.problem_classes import DataQualityProblemClass
 from modules.utils.error_treatment import report_error_io_write, report_error_end_of_switch
 
 LOGGER = initialize_logger()
