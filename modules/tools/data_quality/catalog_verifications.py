@@ -1,12 +1,12 @@
 """ Verifications over the catalog.ttl file. """
-from rdflib import RDF, URIRef
+from rdflib import RDF, URIRef, Graph
 
 from modules.utils.utils_general import contains_number
 
 NAMESPACE_ONTOUML = "https://w3id.org/ontouml#"
 
 
-class problem_char(object):
+class ProblemChar(object):
     """ Class that contains information about problems found in evaluations for characters. """
 
     def __init__(self, instance_name, type_name, description):
@@ -15,7 +15,7 @@ class problem_char(object):
         self.description = description
 
 
-class problem_ends(object):
+class ProblemEnds(object):
     """ Class that contains information about problems found in evaluations for association ends. """
 
     def __init__(self, related_class, relation_name, end_name, description):
@@ -25,7 +25,7 @@ class problem_ends(object):
         self.description = description
 
 
-class problem_generalizations(object):
+class ProblemGeneralizations(object):
     """ Class that contains information about problems found in generalizations. """
 
     def __init__(self, generalization_name, specific_name, general_name, description):
@@ -35,7 +35,7 @@ class problem_generalizations(object):
         self.description = description
 
 
-class problem_old_stereotypes(object):
+class ProblemOldStereotypes(object):
     """ Class that contains information about problems found in generalizations. """
 
     def __init__(self, class_name, old_stereotype, new_stereotype):
@@ -44,8 +44,14 @@ class problem_old_stereotypes(object):
         self.new_stereotype = new_stereotype
 
 
-def verify_unwanted_characters(graph):
-    """ For the entity types in the list, verify if their instances have unwanted characters. """
+def verify_unwanted_characters(graph: Graph) -> list[ProblemChar]:
+    """ For the entity types in the list, verify if their instances have unwanted characters.
+
+    :param graph: Loaded ontology graph.
+    :type graph: Graph
+    :return: List containing all identified problems.
+    :rtype: list[ProblemChar]
+    """
 
     problems_list_char = []
 
@@ -54,44 +60,50 @@ def verify_unwanted_characters(graph):
     for subj, pred, obj in graph.triples((None, RDF.type, None)):
         for name in graph.objects(subj, entity_name):
             name_before = name.value
-            type_clean = obj.n3()[1:-1].replace(NAMESPACE_ONTOUML, "")
+            type_clean = (obj.toPython()).replace(NAMESPACE_ONTOUML, "")
 
             if "\n" in name_before:
                 name_before = name_before.replace("\n", "")
-                problems_list_char.append(problem_char(name_before, type_clean, "has line break"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "has line break"))
 
             try:
                 name_before.encode("utf-8", errors='strict')
             except:
                 name_before = name_before.encode("utf-8", errors='ignore')
-                problems_list_char.append(problem_char(name_before, type_clean, "non utf-8 characters"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "non utf-8 characters"))
 
             if name_before.startswith(" "):
-                problems_list_char.append(problem_char(name_before, type_clean, "starts with space"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "starts with space"))
 
             if name_before.endswith(" "):
-                problems_list_char.append(problem_char(name_before, type_clean, "ends with space"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "ends with space"))
 
             if "  " in name_before:
-                problems_list_char.append(problem_char(name_before, type_clean, "has double space"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "has double space"))
 
             if "\t" in name_before:
-                problems_list_char.append(problem_char(name_before, type_clean, "has indentation"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "has indentation"))
 
             if ("<<" in name_before) or (">>" in name_before):
-                problems_list_char.append(problem_char(name_before, type_clean, "stereotype in name"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "stereotype in name"))
 
             if name_before.startswith("/"):
-                problems_list_char.append(problem_char(name_before, type_clean, "derivation in name"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "derivation in name"))
 
             if "::" in name_before:
-                problems_list_char.append(problem_char(name_before, type_clean, "imported class in name"))
+                problems_list_char.append(ProblemChar(name_before, type_clean, "imported class in name"))
 
     return problems_list_char
 
 
-def verify_association_ends(graph):
-    """ Perform verifications in association ends. """
+def verify_association_ends(graph: Graph) -> list[ProblemEnds]:
+    """ Perform verifications in association ends.
+
+    :param graph: Loaded ontology graph.
+    :type graph: Graph
+    :return: List containing all identified problems.
+    :rtype: list[ProblemEnds]
+    """
 
     problems_list_ends = []
 
@@ -113,15 +125,21 @@ def verify_association_ends(graph):
         if (contains_number(row.prop_value.value)) or ("*" in row.prop_value.value):
             # The replace function is necessary to generate a correct csv removing cases of line breaks in names
             problems_list_ends.append(
-                problem_ends(row.class_name.replace("\n", ""), row.relation_name.replace("\n", ""),
-                             row.prop_value.value.replace("\n", ""),
-                             "association end with possible multiplicity"))
+                ProblemEnds(row.class_name.replace("\n", ""), row.relation_name.replace("\n", ""),
+                            row.prop_value.value.replace("\n", ""),
+                            "association end with possible multiplicity"))
 
     return problems_list_ends
 
 
-def verify_generalizations_properties(graph):
-    """ Identifies cases in which meta-properties are written as names in generalizations. """
+def verify_generalizations_properties(graph: Graph) -> list[ProblemGeneralizations]:
+    """ Identifies cases in which meta-properties are written as names in generalization sets.
+
+    :param graph: Loaded ontology graph.
+    :type graph: Graph
+    :return: List containing all identified problems.
+    :rtype: list[ProblemGeneralizations]
+    """
 
     # Get all generalizations that have a name and that are not in generalization sets
     knows_query = """
@@ -145,18 +163,23 @@ def verify_generalizations_properties(graph):
 
     for gen in qres:
         if any(map(gen.gen_inst_name.__contains__, substring_list)):
-            problems_list_generalizations.append(problem_generalizations(gen.gen_inst_name.value,
-                                                                         gen.specific_name.value,
-                                                                         gen.general_name.value,
-                                                                         "property in generalization name"))
+            problems_list_generalizations.append(ProblemGeneralizations(gen.gen_inst_name.value,
+                                                                        gen.specific_name.value,
+                                                                        gen.general_name.value,
+                                                                        "property in generalization name"))
 
     return problems_list_generalizations
 
 
-def verify_old_stereotypes(graph):
+def verify_old_stereotypes(graph: Graph) -> list[ProblemOldStereotypes]:
     """ Identifies cases in which the used stereotypes can be substituted by correct ones.
     According to: https://github.com/OntoUML/ontouml-models/wiki/Frequently-Asked-Questions
     #how-do-i-document-stereotypes-that-are-not-part-of-the-current-ontouml-profile
+
+    :param graph: Loaded ontology graph.
+    :type graph: Graph
+    :return: List containing all identified problems.
+    :rtype: list[ProblemOldStereotypes]
     """
 
     problems_list_old_stereotypes = []
@@ -198,8 +221,8 @@ def verify_old_stereotypes(graph):
 
         # if in list, add to problems_list
         if stereotype_name in old_stereotypes_dict.keys():
-            problems_list_old_stereotypes.append(problem_old_stereotypes(class_name,
-                                                                         no_prefix_stereotype_name,
-                                                                         old_stereotypes_dict[stereotype_name]))
+            problems_list_old_stereotypes.append(ProblemOldStereotypes(class_name,
+                                                                       no_prefix_stereotype_name,
+                                                                       old_stereotypes_dict[stereotype_name]))
 
     return problems_list_old_stereotypes
