@@ -26,7 +26,7 @@ def generate_release_file(catalog_path: str):
     # Get all TTL files' complete paths
     LOGGER.info(f"Identifying all TTL files in directory {catalog_path} and in its subdirectories.")
 
-    list_ttl_files = list_all_files_with_filetype(catalog_path)
+    list_ttl_files = list_all_files_with_filetype(catalog_path, "ttl")
 
     # Removing shapes files. Using [:] keeps the reference to the list
     # Reference: https://stackoverflow.com/questions/30764196/find-and-delete-list-elements-if-matching-a-string)

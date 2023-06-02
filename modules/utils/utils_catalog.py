@@ -10,8 +10,8 @@ def list_all_files_with_filetype(catalog_path: str, filetype: str) -> list:
     list_files = []
 
     catalog_pathlib = pathlib.Path(catalog_path)
-    for ttl_item in list(catalog_pathlib.rglob(f'*.{filetype}')):
-        if "\\." not in str(ttl_item):
-            list_files.append(str(ttl_item))
+    for filetype_item in list(catalog_pathlib.rglob(f'*.{filetype}')):
+        if "\\." not in str(filetype_item):
+            list_files.append(str(filetype_item))
 
     return list_files
