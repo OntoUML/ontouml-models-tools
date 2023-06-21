@@ -118,7 +118,7 @@ provided link.
 
 ### Future Features
 
-The intended features to be implemented are available as issues in this repository.
+The intended features to be implemented are [available as issues](https://github.com/OntoUML/ontouml-models-tools/issues) in this repository.
 
 ## Execution Instructions
 
